@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # Serviço do PostgreSQL
+  pay-tracker-db:
+    image: postgres:13-alpine
+    container_name: pay-tracker-db
+    env_file:
+      - .env
+    volumes:
+      - pay-tracker-db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - pay-tracker-network
+
+  # Serviço da API (Pay Tracker API)
+  pay-tracker-api:
+    build: .
+    container_name: pay-tracker-api
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"  
+    volumes:
+      - ./:/home/node/app  
+    depends_on:
+      - pay-tracker-db
+    networks:
+      - pay-tracker-network
+
+
+volumes:
+  pay-tracker-db-data:
+
+
+networks:
+  pay-tracker-network:
+    driver: bridge
