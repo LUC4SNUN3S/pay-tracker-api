@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common'
-import { createHash } from 'crypto'
 
+import { DatabaseService } from '@/database/database.service'
 import { ProcessFileService } from '@/file-upload/services/process-file.service'
 import { IPayment } from '@/payments/interfaces/payment.interface'
 
 export const BATCH_SIZE = 1000
 
 export interface FileUploadUseCaseResponse {
-  key: string
+  paymentBatchId: string
 }
 
 interface ISaveToDatabaseParams {
@@ -16,29 +16,40 @@ interface ISaveToDatabaseParams {
 
 @Injectable()
 export class FileUploadUseCase {
-  constructor(private readonly processFileService: ProcessFileService) {}
+  constructor(
+    private readonly processFileService: ProcessFileService,
+    private readonly databaseService: DatabaseService,
+  ) {}
 
   async execute(file: Express.Multer.File): Promise<FileUploadUseCaseResponse> {
     const fileBuffer = file.buffer
 
-    const hash = createHash('sha256')
-      .update(file.buffer)
-      .digest('hex')
-      .slice(0, 10)
-
-    const dateUpload = new Date().getUTCMilliseconds()
-    const key = `${hash}-${dateUpload}`
-
     const parsedData = await this.processFileService.execute(fileBuffer)
 
-    await this.saveToDatabase({
+    const paymentBatchId = await this.saveToDatabase({
       data: parsedData,
     })
 
-    return { key }
+    return { paymentBatchId }
   }
 
-  private async saveToDatabase({ data }: ISaveToDatabaseParams): Promise<void> {
-    console.log(data)
+  private async saveToDatabase({
+    data,
+  }: ISaveToDatabaseParams): Promise<string> {
+    await this.databaseService.paymentBatch.create({
+      data: {
+        id: data[0].paymentBatchId,
+        updatedAt: new Date(),
+        confirmed: false,
+        createdAt: new Date(),
+      },
+    })
+    await this.databaseService.$transaction(async (prisma) => {
+      await prisma.payment.createMany({
+        data,
+      })
+    })
+
+    return data[0].paymentBatchId
   }
 }

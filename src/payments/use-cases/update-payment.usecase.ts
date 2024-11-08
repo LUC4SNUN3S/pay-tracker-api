@@ -1,33 +1,52 @@
-import { Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 
+import { ValidAndParseDate } from '@/core/utils/parse-data.util'
 import { UpdatePaymentDto } from '@/payments/dtos/update-payment.dto'
-
-import { IPayment } from '../interfaces/payment.interface'
+import { PaymentsRepository } from '@/payments/repositories/payments.repository'
 
 interface IExecuteParams {
   id: string
-  cacheKey: string
   updatePaymentDto: UpdatePaymentDto
 }
+type IApplyValidationsParams = IExecuteParams
 
 @Injectable()
 export class UpdatePaymentUseCase {
-  constructor() {}
+  constructor(private readonly paymentsRepository: PaymentsRepository) {}
 
-  private async updatePaymentInCache(
-    cacheKey: string,
-    index: string,
-    updatePaymentDto: UpdatePaymentDto,
-    payment: IPayment,
-  ) {
-    console.log({ cacheKey, index, updatePaymentDto, payment })
+  async applyValidations({ id, updatePaymentDto }: IApplyValidationsParams) {
+    const { birthdayDate } = updatePaymentDto
+    const payment = await this.paymentsRepository.getPaymentById(id)
+
+    if (!payment) {
+      throw new NotFoundException('Ops! Pagamento Não encontrado')
+    }
+    const formatedBirthdayDate = ValidAndParseDate(birthdayDate)
+
+    if (!formatedBirthdayDate) {
+      throw new BadRequestException('Ops! Data de nascimento inválido')
+    }
+
+    return { formatedBirthdayDate, payment }
   }
 
-  async execute({
-    id,
-    updatePaymentDto,
-    cacheKey,
-  }: IExecuteParams): Promise<void> {
-    console.log({ id, updatePaymentDto, cacheKey })
+  async execute({ id, updatePaymentDto }: IExecuteParams): Promise<void> {
+    const { formatedBirthdayDate, payment } = await this.applyValidations({
+      id,
+      updatePaymentDto,
+    })
+
+    await this.paymentsRepository.updatePayment({
+      id,
+      updatePaymentDto: {
+        ...updatePaymentDto,
+        birthdayDate: formatedBirthdayDate,
+      },
+      paymentBatchId: payment.paymentBatchId,
+    })
   }
 }

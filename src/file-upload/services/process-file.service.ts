@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { randomUUID } from 'crypto'
 import * as iconv from 'iconv-lite'
 
+import { ValidAndParseDate } from '@/core/utils/parse-data.util'
 import { IPayment } from '@/payments/interfaces/payment.interface'
 
 type ParsedData = IPayment
@@ -24,7 +25,14 @@ export class ProcessFileService {
 
   private parseContent(content: string): ParsedData[] {
     const lines = this.splitLines(content)
-    const parsedData = lines.map((line) => this.parseLine(line))
+    const paymentBatchId = randomUUID()
+
+    const parsedData = lines.map((line) => {
+      return {
+        ...this.parseLine(line),
+        paymentBatchId,
+      }
+    })
     return parsedData
   }
 
@@ -40,11 +48,12 @@ export class ProcessFileService {
     return {
       id,
       name,
-      age: this.formatField(age, 'age'),
+      age: Number(this.formatField(age, 'age')),
       adress,
       cpf: this.formatField(cpf, 'cpf'),
       amount: Number(this.formatField(amountPayed, 'amount')),
       birthdayDate: this.formatField(birthdayDate, 'birthdayDate'),
+      paymentBatchId: null,
     }
   }
 
@@ -55,6 +64,10 @@ export class ProcessFileService {
       cpf: '00000000000',
       amount: '0000000000000000',
       birthdayDate: '00000000',
+    }
+
+    if (field === 'birthdayDate') {
+      return value === formats[field] ? null : ValidAndParseDate(value)
     }
 
     return value === formats[field] ? null : value

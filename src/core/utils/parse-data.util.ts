@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-export function validAndParseDate(date: string) {
+export function ValidAndParseDate(date: string): string | null {
   if (dayjs(date).isValid()) {
     return dayjs(date).format('YYYY-MM-DD')
   }

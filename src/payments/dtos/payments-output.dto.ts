@@ -1,4 +1,4 @@
-export interface IPayment {
+export class PaymentOutputDto {
   id: string
   name: string
   age: number
@@ -7,9 +7,4 @@ export interface IPayment {
   amount: number
   birthdayDate: string
   paymentBatchId: string
-}
-
-export interface IPaymentBatch {
-  id: string
-  confirmed: boolean
 }

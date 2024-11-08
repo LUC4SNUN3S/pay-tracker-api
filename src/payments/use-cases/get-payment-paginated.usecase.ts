@@ -1,16 +1,30 @@
 import { Injectable } from '@nestjs/common'
 
+import { PaginatedOutputDto } from '@/core/dtos/paginated-output.dto'
+import { ListPaymentsInputDto } from '@/payments/dtos/list-payments-input.dto'
+import { PaymentOutputDto } from '@/payments/dtos/payments-output.dto'
+import { PaymentsRepository } from '@/payments/repositories/payments.repository'
+
 interface IExecuteParams {
-  key: string
-  page: number
-  pageSize: number
+  listPaymentsInputDto: ListPaymentsInputDto
+}
+
+interface IExecuteResponse {
+  payments: PaginatedOutputDto<PaymentOutputDto>
 }
 
 @Injectable()
 export class GetPaymentPaginatedUseCase {
-  constructor() {}
+  constructor(private readonly paymentsRepository: PaymentsRepository) {}
 
-  async execute({ page, pageSize, key }: IExecuteParams) {
-    console.log({ page, pageSize, key })
+  async execute({
+    listPaymentsInputDto,
+  }: IExecuteParams): Promise<IExecuteResponse> {
+    const payments =
+      await this.paymentsRepository.getPaymentsPaginated(listPaymentsInputDto)
+
+    return {
+      payments,
+    }
   }
 }

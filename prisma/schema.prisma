@@ -18,20 +18,21 @@ model Payment {
   amount       Float
   createdAt    DateTime @default(now())
   name         String   @db.VarChar(15)
-  adress       String   @db.VarChar(4)
+  adress       String?  @db.VarChar(34)
+  age          Int?
   cpf          String   @db.VarChar(11)
-  birthdayDate String   @map("birthday_date") @db.VarChar(8)
+  birthdayDate String?  @map("birthday_date") @db.VarChar(11)
 
   paymentBatch   PaymentBatch @relation(fields: [paymentBatchId], references: [id])
-  paymentBatchId String
+  paymentBatchId String       @map("payment_batch_id")
 
   @@map("payments")
 }
 
 model PaymentBatch {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @map("updated_at")
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
   confirmed Boolean
 
   Payment Payment[]

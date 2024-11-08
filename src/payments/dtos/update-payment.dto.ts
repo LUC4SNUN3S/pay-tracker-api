@@ -1,27 +1,31 @@
-import { IsString, IsOptional } from 'class-validator'
+import { IsOptional, IsNumber, MaxLength } from 'class-validator'
+
+import { IsNotBlank } from '@/core/decorators/is-not-blank.decorator'
+import { MessagesValidations } from '@/core/utils/messages-validations.util'
 
 export class UpdatePaymentDto {
-  @IsString()
-  @IsOptional()
+  @MaxLength(15, { message: MessagesValidations.maxLength('name') })
+  @IsNotBlank({ message: MessagesValidations.isNotBlank('name') })
   name: string
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  age: string
+  age?: number
 
-  @IsString()
+  @MaxLength(34, { message: MessagesValidations.maxLength('adress') })
+  @IsNotBlank({ message: MessagesValidations.isNotBlank('adress') })
   @IsOptional()
-  adress: string
+  adress?: string
 
-  @IsString()
-  @IsOptional()
+  @MaxLength(11, { message: MessagesValidations.maxLength('cpf') })
+  @IsNotBlank({ message: MessagesValidations.isNotBlank('cpf') })
   cpf: string
 
-  @IsString()
-  @IsOptional()
-  amount: string
+  @IsNumber()
+  amount: number
 
-  @IsString()
+  @MaxLength(11, { message: MessagesValidations.maxLength('birthdayDate') })
+  @IsNotBlank({ message: MessagesValidations.isNotBlank('birthdayDate') })
   @IsOptional()
-  birthdayDate: string
+  birthdayDate?: string
 }
