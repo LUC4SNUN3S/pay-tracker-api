@@ -10,7 +10,7 @@ services:
     volumes:
       - pay-tracker-db-data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - '5432:5432'
     networks:
       - pay-tracker-network
 
@@ -21,19 +21,18 @@ services:
     env_file:
       - .env
     ports:
-      - "3000:3000"  
+      - '3000:3000'
     volumes:
-      - ./:/home/node/app  
+      - ./:/home/node/app
     depends_on:
       - pay-tracker-db
     networks:
       - pay-tracker-network
 
-
 volumes:
   pay-tracker-db-data:
-
 
 networks:
   pay-tracker-network:
     driver: bridge
+    name: pay-tracker-network

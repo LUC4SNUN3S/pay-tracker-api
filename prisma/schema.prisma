@@ -22,5 +22,19 @@ model Payment {
   cpf          String   @db.VarChar(11)
   birthdayDate String   @map("birthday_date") @db.VarChar(8)
 
+  paymentBatch   PaymentBatch @relation(fields: [paymentBatchId], references: [id])
+  paymentBatchId String
+
   @@map("payments")
+}
+
+model PaymentBatch {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @map("updated_at")
+  confirmed Boolean
+
+  Payment Payment[]
+
+  @@map("payment_batch")
 }

@@ -1,4 +1,6 @@
-
 export abstract class PaymentRepository {
-  abstract confirmFileData(): Promise<void>
+  abstract confirmPayment(): Promise<void>
+  abstract getPaymentPaginated(): Promise<void>
+  abstract updatePayment(): Promise<void>
+  abstract deletePayment(): Promise<void>
 }

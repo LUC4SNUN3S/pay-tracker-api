@@ -1,6 +1,5 @@
 import { z } from 'zod'
 
-
 const envSchema = z.object({
   POSTGRES_USER: z.string().min(1),
   POSTGRES_PASSWORD: z.string().min(1),
@@ -14,4 +13,4 @@ const validateEnviromentVariables = () => {
   return envSchema.parse(process.env)
 }
 
-export const env = validateEnviromentVariables();
+export const env = validateEnviromentVariables()
