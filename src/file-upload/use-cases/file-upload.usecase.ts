@@ -22,6 +22,7 @@ export class FileUploadUseCase {
   ) {}
 
   async execute(file: Express.Multer.File): Promise<FileUploadUseCaseResponse> {
+    console.log({ file })
     const fileBuffer = file.buffer
 
     const parsedData = await this.processFileService.execute(fileBuffer)

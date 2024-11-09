@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { randomUUID } from 'crypto'
 import * as iconv from 'iconv-lite'
+import * as jschardet from 'jschardet'
 
 import { ValidAndParseDate } from '@/core/utils/parse-data.util'
 import { IPayment } from '@/payments/interfaces/payment.interface'
@@ -10,17 +11,24 @@ type ParsedData = IPayment
 @Injectable()
 export class ProcessFileService {
   async execute(fileBuffer: Buffer): Promise<ParsedData[]> {
-    const fileContent = await this.readFile(fileBuffer)
+    const encodingDetected = jschardet.detect(fileBuffer)
+
+    const encoding = encodingDetected.encoding || 'utf-8'
+
+    const fileContent = await this.readFile(fileBuffer, encoding)
     const parsedData = this.parseContent(fileContent)
     return parsedData
   }
 
-  private async readFile(fileBuffer: Buffer): Promise<string> {
-    return iconv.decode(fileBuffer, 'utf16le') // Identificando o arquivo como 'utf16le'
+  private async readFile(
+    fileBuffer: Buffer,
+    encoding: string,
+  ): Promise<string> {
+    return iconv.decode(fileBuffer, encoding)
   }
 
   private splitLines(content: string): string[] {
-    return content.split('\n').filter((line) => line.trim() !== '') // Dividindo por linha e filtrando vazios
+    return content.split('\n').filter((line) => line.trim() !== '')
   }
 
   private parseContent(content: string): ParsedData[] {
