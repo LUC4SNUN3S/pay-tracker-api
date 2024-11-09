@@ -15,7 +15,7 @@ export interface IUpdatePaymentParams {
 }
 
 export abstract class PaymentsRepository {
-  abstract confirmPayment(): Promise<void>
+  abstract confirmPayment(paymentBatchId: string): Promise<void>
   abstract getPaymentsPaginated(
     filters: IListPaymentsFilters,
   ): Promise<PaginatedResult<PaymentOutputDto>>

@@ -78,8 +78,17 @@ export class PrismaPaymentsRepository implements PaymentsRepository {
     })
   }
 
-  confirmPayment(): Promise<void> {
-    throw new Error('Method not implemented.')
+  async confirmPayment(paymentBatchId: string): Promise<void> {
+    await this.databaseService.paymentBatch.update({
+      where: {
+        id: paymentBatchId,
+      },
+
+      data: {
+        confirmed: true,
+        updatedAt: new Date(),
+      },
+    })
   }
 
   async getPaymentById(id: string): Promise<IPayment> {

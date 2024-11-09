@@ -1,6 +1,8 @@
 import { Transform } from 'class-transformer'
 import { IsNumber, IsOptional, IsUUID } from 'class-validator'
 
+import { MessagesValidations } from '@/core/utils/messages-validations.util'
+
 export class ListPaymentsInputDto {
   @IsNumber()
   @IsOptional()
@@ -22,6 +24,6 @@ export class ListPaymentsInputDto {
   })
   perPage?: number
 
-  @IsUUID()
+  @IsUUID('4', { message: MessagesValidations.IsUuid('lote de pagamentos') })
   paymentBatchId: string
 }

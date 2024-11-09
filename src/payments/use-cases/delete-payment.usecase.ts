@@ -19,7 +19,7 @@ export class DeletePaymentUseCase {
     const payment = await this.paymentsRepository.getPaymentById(id)
 
     if (!payment) {
-      throw new NotFoundException('Ops! Pagamento Não encontrado')
+      throw new NotFoundException('Ops! Pagamento Não encontrado.')
     }
 
     const batchPayments =
@@ -28,7 +28,7 @@ export class DeletePaymentUseCase {
       )
 
     if (!batchPayments) {
-      throw new NotFoundException('Ops! Batch nao encontrado')
+      throw new NotFoundException('Ops! Batch nao encontrado.')
     }
 
     console.log(batchPayments)

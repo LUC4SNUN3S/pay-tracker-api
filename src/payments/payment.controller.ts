@@ -4,15 +4,19 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Put,
   Query,
 } from '@nestjs/common'
 
 import { ListPaymentsInputDto } from '@/payments/dtos/list-payments-input.dto'
 import { UpdatePaymentDto } from '@/payments/dtos/update-payment.dto'
-import { DeletePaymentUseCase } from '@/payments/use-cases/delete-payment.usecase'
-import { GetPaymentPaginatedUseCase } from '@/payments/use-cases/get-payment-paginated.usecase'
-import { UpdatePaymentUseCase } from '@/payments/use-cases/update-payment.usecase'
+import {
+  ConfirmPaymentsUseCase,
+  DeletePaymentUseCase,
+  GetPaymentPaginatedUseCase,
+  UpdatePaymentUseCase,
+} from '@/payments/use-cases'
 
 @Controller('payments')
 export class PaymentController {
@@ -20,6 +24,7 @@ export class PaymentController {
     private readonly getPaymentPaginatedUseCase: GetPaymentPaginatedUseCase,
     private readonly updatePaymentUseCase: UpdatePaymentUseCase,
     private readonly deletePaymentUseCase: DeletePaymentUseCase,
+    private readonly confirmPaymentsUseCase: ConfirmPaymentsUseCase,
   ) {}
 
   @Get()
@@ -42,6 +47,11 @@ export class PaymentController {
       id,
       updatePaymentDto,
     })
+  }
+
+  @Patch('confirm/:paymentBatchId')
+  async confirmPayment(@Param('paymentBatchId') paymentBatchId: string) {
+    await this.confirmPaymentsUseCase.execute(paymentBatchId)
   }
 
   @Delete(':paymentId')
