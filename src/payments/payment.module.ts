@@ -8,6 +8,7 @@ import {
   DeletePaymentUseCase,
   GetPaymentPaginatedUseCase,
   UpdatePaymentUseCase,
+  ExportPaymentToCsvUseCase,
 } from '@/payments/use-cases'
 
 @Module({
@@ -19,6 +20,7 @@ import {
     UpdatePaymentUseCase,
     DeletePaymentUseCase,
     ConfirmPaymentsUseCase,
+    ExportPaymentToCsvUseCase,
   ],
 })
 export class PaymentModule {}

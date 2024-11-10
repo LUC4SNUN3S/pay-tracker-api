@@ -1,8 +1,20 @@
-import { ValidationPipe } from '@nestjs/common'
+import { INestApplication, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 import { AppModule } from '@/app.module'
 import { env } from '@/config/env'
+
+async function enableDocumentation(app: INestApplication<any>) {
+  const config = new DocumentBuilder()
+    .setTitle('Pay-Tracker-API')
+    .setDescription('API direcionada a upload e controle de pagamentos')
+    .addTag('Pay-Tracker-API')
+    .build()
+
+  const documentFactory = () => SwaggerModule.createDocument(app, config)
+  SwaggerModule.setup('api', app, documentFactory)
+}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -16,6 +28,9 @@ async function bootstrap() {
       stopAtFirstError: true,
     }),
   )
+
+  enableDocumentation(app)
+
   await app.listen(env.PORT)
 }
 bootstrap()

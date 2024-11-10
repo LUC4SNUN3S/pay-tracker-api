@@ -45,12 +45,6 @@ export class PrismaPaymentsRepository implements PaymentsRepository {
     paymentBatchId,
     updatePaymentDto,
   }: IUpdatePaymentParams): Promise<void> {
-    console.log({
-      id,
-      paymentBatchId,
-      updatePaymentDto,
-    })
-
     await this.databaseService.$transaction(async (prisma) => {
       await prisma.payment.update({
         where: {
@@ -103,6 +97,14 @@ export class PrismaPaymentsRepository implements PaymentsRepository {
     return this.databaseService.paymentBatch.findFirst({
       where: {
         id: paymentBatchId,
+      },
+    })
+  }
+
+  async getPaymentsbyBatchId(paymentBatchId: string): Promise<IPayment[]> {
+    return this.databaseService.payment.findMany({
+      where: {
+        paymentBatchId,
       },
     })
   }

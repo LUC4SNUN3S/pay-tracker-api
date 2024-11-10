@@ -20,6 +20,8 @@ export abstract class PaymentsRepository {
     filters: IListPaymentsFilters,
   ): Promise<PaginatedResult<PaymentOutputDto>>
 
+  abstract getPaymentsbyBatchId(paymentBatchId: string): Promise<IPayment[]>
+
   abstract updatePayment({
     id,
     paymentBatchId,

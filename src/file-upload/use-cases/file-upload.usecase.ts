@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
+import { extname } from 'path'
 
 import { DatabaseService } from '@/database/database.service'
 import { ProcessFileService } from '@/file-upload/services/process-file.service'
@@ -21,8 +22,24 @@ export class FileUploadUseCase {
     private readonly databaseService: DatabaseService,
   ) {}
 
+  private applyValidations(file: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('Ops! O arquivo precisa ser enviado.')
+    }
+
+    const allowedTypes = /txt|rem/
+    const ext = extname(file.originalname).toLowerCase()
+
+    if (!allowedTypes.test(ext)) {
+      throw new BadRequestException(
+        'Ops! O arquivo precisa ser um .txt ou .rem',
+      )
+    }
+  }
+
   async execute(file: Express.Multer.File): Promise<FileUploadUseCaseResponse> {
-    console.log({ file })
+    this.applyValidations(file)
+
     const fileBuffer = file.buffer
 
     const parsedData = await this.processFileService.execute(fileBuffer)

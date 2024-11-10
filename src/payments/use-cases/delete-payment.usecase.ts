@@ -31,8 +31,6 @@ export class DeletePaymentUseCase {
       throw new NotFoundException('Ops! Batch nao encontrado.')
     }
 
-    console.log(batchPayments)
-
     if (batchPayments.confirmed) {
       throw new ConflictException(
         'Ops! Pagamento não pode ser excluído, pois já foi confirmado!',
