@@ -6,6 +6,11 @@ import {
   ApiOperation,
 } from '@nestjs/swagger'
 
+import {
+  ConflictExampleResponse,
+  NotFoundExampleResponse,
+} from '@/core/documentation/response'
+
 export function DocumentDeletePayment() {
   return applyDecorators(
     ApiOperation({
@@ -14,19 +19,11 @@ export function DocumentDeletePayment() {
     }),
 
     ApiNotFoundResponse({
-      example: {
-        message: 'string',
-        error: 'string',
-        statusCode: 409,
-      },
+      example: NotFoundExampleResponse,
     }),
 
     ApiConflictResponse({
-      example: {
-        message: 'string',
-        error: 'string',
-        statusCode: 409,
-      },
+      example: ConflictExampleResponse,
     }),
 
     ApiOkResponse({

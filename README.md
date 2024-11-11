@@ -47,7 +47,7 @@ Siga os passos abaixo para rodar o projeto localmente.
 - Certifique-se de ter o Docker instalado em sua máquina. O projeto já possui um arquivo docker-compose.yml configurado para rodar o banco de dados e o servidor da aplicação. Caso o Docker não esteja instalado, aqui está o link para instalação do Docker.
 
 3. **Configurar as Variáveis de Ambiente**
-   Crie um arquivo .env na raiz do projeto e configure as variáveis necessárias. O projeto contem um arquivo de exemplo .env:
+   Crie um arquivo .env na raiz do projeto e configure as variáveis necessárias. O projeto contem um arquivo de exemplo .env, bastac opiar e colar!
 
 4. **Iniciar a aplicação Docker**
 
@@ -60,12 +60,23 @@ Siga os passos abaixo para rodar o projeto localmente.
     docker exec -it pay-tracker-api sh
     npm i
    ```
-6. Rode as Migrations:
    ```bash
-   docker exec -it pay-tracker-api sh
+    npm i
+   ```
+6. Rode as Migrations:
+
+   - **dentro do container, caso não esteja, rode o `docker exec` acima**
+
+   ```bash
    npx prisma migration deploy
    ```
-   **Depois desse passo a passo seu sistema deve estar rodendo normalmente.**
+
+   - **Depois desse passo a passo seu sistema deve estar rodando normalmente.**
+
+7. Verifique se o projeto está rodando normalmente
+   ```bash
+   docker logs -f pay-tracker-api
+   ```
 
 ## API
 

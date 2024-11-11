@@ -7,6 +7,12 @@ import {
   ApiOperation,
 } from '@nestjs/swagger'
 
+import {
+  BadRequestExampleResponse,
+  ConflictExampleResponse,
+  NotFoundExampleResponse,
+} from '@/core/documentation/response'
+
 export function DocumentUpdatePayment() {
   return applyDecorators(
     ApiOperation({
@@ -15,27 +21,15 @@ export function DocumentUpdatePayment() {
     }),
 
     ApiBadRequestResponse({
-      example: {
-        message: 'string',
-        error: 'string',
-        statusCode: 400,
-      },
+      example: BadRequestExampleResponse,
     }),
 
     ApiNotFoundResponse({
-      example: {
-        message: 'string',
-        error: 'string',
-        statusCode: 409,
-      },
+      example: NotFoundExampleResponse,
     }),
 
     ApiConflictResponse({
-      example: {
-        message: 'string',
-        error: 'string',
-        statusCode: 409,
-      },
+      example: ConflictExampleResponse,
     }),
 
     ApiOkResponse({

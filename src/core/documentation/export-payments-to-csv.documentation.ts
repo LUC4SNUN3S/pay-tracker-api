@@ -8,6 +8,12 @@ import {
   ApiResponse,
 } from '@nestjs/swagger'
 
+import {
+  ConflictExampleResponse,
+  InternalServerErrorExampleResponse,
+  NotFoundExampleResponse,
+} from '@/core/documentation/response'
+
 export function DocumentExportPaymentToCsv() {
   return applyDecorators(
     ApiOperation({
@@ -33,29 +39,17 @@ export function DocumentExportPaymentToCsv() {
 
     ApiConflictResponse({
       description: 'Conflict Exception',
-      example: {
-        message: 'string',
-        error: 'string',
-        statusCode: 409,
-      },
+      example: ConflictExampleResponse,
     }),
 
     ApiNotFoundResponse({
       description: 'Bad Request Exception',
-      example: {
-        message: 'string',
-        error: 'string',
-        statusCode: 404,
-      },
+      example: NotFoundExampleResponse,
     }),
 
     ApiInternalServerErrorResponse({
       description: 'internal server error',
-      example: {
-        message: 'string',
-        error: 'string',
-        statusCode: 500,
-      },
+      example: InternalServerErrorExampleResponse,
     }),
   )
 }

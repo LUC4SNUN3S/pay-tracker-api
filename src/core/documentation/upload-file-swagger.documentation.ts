@@ -8,6 +8,11 @@ import {
   ApiInternalServerErrorResponse,
 } from '@nestjs/swagger'
 
+import {
+  BadRequestExampleResponse,
+  InternalServerErrorExampleResponse,
+} from '@/core/documentation/response'
+
 export function DocumentFileUploadEndpoint() {
   return applyDecorators(
     ApiOperation({
@@ -41,20 +46,12 @@ export function DocumentFileUploadEndpoint() {
 
     ApiBadRequestResponse({
       description: 'Bad Request Exception',
-      example: {
-        message: 'string',
-        error: 'string',
-        statusCode: 400,
-      },
+      example: BadRequestExampleResponse,
     }),
 
     ApiInternalServerErrorResponse({
       description: 'Erro interno no servidor ao processar o arquivo.',
-      example: {
-        message: 'string',
-        error: 'string',
-        statusCode: 500,
-      },
+      example: InternalServerErrorExampleResponse,
     }),
   )
 }
