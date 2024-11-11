@@ -4,7 +4,7 @@ import { IsNumber, IsOptional, IsUUID } from 'class-validator'
 import { MessagesValidations } from '@/core/utils/messages-validations.util'
 
 export class ListPaymentsInputDto {
-  @IsNumber()
+  @IsNumber({}, { message: MessagesValidations.number('página') })
   @IsOptional()
   @Transform(({ value }) => {
     if (typeof value === 'string') {
@@ -14,7 +14,7 @@ export class ListPaymentsInputDto {
   })
   page?: number
 
-  @IsNumber()
+  @IsNumber({}, { message: MessagesValidations.number('itens por página') })
   @IsOptional()
   @Transform(({ value }) => {
     if (typeof value === 'string') {
@@ -24,6 +24,6 @@ export class ListPaymentsInputDto {
   })
   perPage?: number
 
-  @IsUUID('4', { message: MessagesValidations.IsUuid('lote de pagamentos') })
+  @IsUUID('4', { message: MessagesValidations.isUuid('lote de pagamentos') })
   paymentBatchId: string
 }

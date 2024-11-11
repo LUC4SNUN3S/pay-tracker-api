@@ -12,72 +12,79 @@ Este é um sistema robusto desenvolvido para otimizar o processo de recebimento 
 
 ## Descrição
 
-O sistema foi desenvolvido para automatizar a verificação e confirmação dos pagamentos feitos no dia anterior. João, um funcionário da empresa, precisava de uma solução mais eficiente e robusta para manipular os dados de pagamentos que eram processados manualmente via Excel. O sistema permite o upload dos dados, visualização e auditoria através de uma interface API REST, garantindo a integridade e a agilidade no processo.
+Este é um sistema robusto desenvolvido para otimizar o processo de recebimento de pagamentos. Ele permite o upload de arquivos contendo os dados de pagamento, visualização paginada, edição e exclusão de dados, além de fornecer uma funcionalidade de auditoria e exportação para CSV.
 
 ## Funcionalidades
 
-- **Upload de Arquivo**: Permite o upload de um arquivo contendo os dados de pagamento.
-- **Visualização Paginada**: Dados do arquivo são exibidos de forma paginada para facilitar a visualização e auditoria.
-- **Edição e Exclusão de Dados**: O sistema permite editar e excluir dados caso haja incoerências durante a verificação.
-- **Confirmação e Auditoria**: Após a verificação, os dados são confirmados e não podem mais ser alterados, garantindo a integridade dos dados para as auditorias.
-- **Exportação em CSV**: Permite a exportação dos dados verificados em formato CSV para fácil compartilhamento e armazenamento.
+- **Upload de Arquivo**: permite o upload de um arquivo contendo os dados de pagamento.
+- **Visualização Paginada**: os dados do arquivo são exibidos de forma paginada para facilitar a visualização e auditoria.
+- **Edição e Exclusão de Dados**: o sistema permite editar e excluir dados caso haja incoerências durante a verificação.
+- **Confirmação e Auditoria**: após a verificação, os dados são confirmados e não podem mais ser alterados, garantindo a integridade dos dados para auditorias.
+- **Exportação em CSV**: permite a exportação dos dados verificados em formato CSV para fácil compartilhamento e armazenamento.
 
 ## Tecnologias
 
 Este projeto foi desenvolvido utilizando as seguintes tecnologias:
 
-- **NestJS**: Framework para desenvolvimento de APIs.
-- **FastCSV**: Biblioteca para manipulação e exportação de arquivos CSV.
-- **PostgreSQL**: Banco de dados relacional para armazenar os dados dos pagamentos.
-- **Swagger**: Para documentação da API.
-- **Docker**: Utilizado para facilitar a configuração e execução da aplicação.
-- **Jest**: Framework para testes unitários e de integração.
+- **NestJS**: framework para desenvolvimento de APIs.
+- **FastCSV**: biblioteca para manipulação e exportação de arquivos CSV.
+- **PostgreSQL**: banco de dados relacional para armazenar os dados dos pagamentos.
+- **Swagger**: utilizado para documentação da API.
+- **Docker**: facilita a configuração e execução da aplicação.
 
 ## Instalação
 
 Siga os passos abaixo para rodar o projeto localmente.
 
 1. **Clone o repositório:**
+
    ```bash
    git clone https://github.com/LUC4SNUN3S/pay-tracker-api.git
    cd pay-tracker-api
+
    ```
+
 2. **Configurar o Docker**
 
-- Certifique-se de ter o Docker instalado em sua máquina. O projeto já possui um arquivo docker-compose.yml configurado para rodar o banco de dados e o servidor da aplicação. Caso o Docker não esteja instalado, aqui está o link para instalação do Docker.
+- Certifique-se de ter o Docker instalado em sua máquina. O projeto já possui um arquivo `docker-compose.yml` configurado para rodar o banco de dados e o servidor da aplicação. Caso o Docker não esteja instalado, acesse o [link para instalação do Docker](https://docs.docker.com).
+  - Instale o Docker na maquina
+  - Instale o docker compose na maquina
 
-3. **Configurar as Variáveis de Ambiente**
-   Crie um arquivo .env na raiz do projeto e configure as variáveis necessárias. O projeto contem um arquivo de exemplo .env, bastac opiar e colar!
+3. **Configurar as Variáveis de Ambiente**  
+   Crie um arquivo `.env` na raiz do projeto e configure as variáveis necessárias. O projeto contém um arquivo de exemplo `.env`; basta copiar e colar!
 
-4. **Iniciar a aplicação Docker**
+4. **Iniciar a aplicação com Docker:**
 
    ```bash
    docker-compose up -d
+
    ```
 
-5. Instale as dependencias:
+5. **Instale as dependências:**
+
    ```bash
-    docker exec -it pay-tracker-api sh
+   docker exec -it pay-tracker-api sh
+   ```
+
+   ```bash
     npm i
    ```
-   ```bash
-    npm i
-   ```
-6. Rode as Migrations:
 
-   - **dentro do container, caso não esteja, rode o `docker exec` acima**
+6. **Rode as Migrations:**
+
+   - **Dentro do container, caso não esteja, rode o comando `docker exec` acima.**
 
    ```bash
-   npx prisma migration deploy
+   npx prisma migrate dev
    ```
 
    - **Depois desse passo a passo seu sistema deve estar rodando normalmente.**
 
-7. Verifique se o projeto está rodando normalmente
+7. Verifique se o projeto está rodando normalmente:
    ```bash
    docker logs -f pay-tracker-api
    ```
 
 ## API
 
-Acesse a documentação da api na url: http://localhost:3000/api
+Acesse a documentação da api na url: http://localhost:3000/doc

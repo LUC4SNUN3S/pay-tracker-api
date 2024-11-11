@@ -23,7 +23,7 @@ export class PrismaPaymentsRepository implements PaymentsRepository {
     filters: IListPaymentsFilters,
   ): Promise<PaginatedResult<PaymentOutputDto>> {
     const paginate = createPaginator({
-      perPage: filters.perPage,
+      perPage: filters.perPage ?? 100,
       page: filters.page,
     })
 
@@ -50,7 +50,14 @@ export class PrismaPaymentsRepository implements PaymentsRepository {
         where: {
           id,
         },
-        data: updatePaymentDto,
+        data: {
+          adress: updatePaymentDto?.adress || null,
+          amount: updatePaymentDto.amount,
+          birthdayDate: updatePaymentDto?.birthdayDate || null,
+          name: updatePaymentDto.name,
+          age: updatePaymentDto?.age || null,
+          cpf: updatePaymentDto.cpf,
+        },
       })
 
       await prisma.paymentBatch.update({

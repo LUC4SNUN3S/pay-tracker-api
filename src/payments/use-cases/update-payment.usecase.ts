@@ -1,12 +1,11 @@
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
 
-import { ValidAndParseDate } from '@/core/utils/parse-data.util'
 import { UpdatePaymentDto } from '@/payments/dtos/update-payment.dto'
+import { IPayment } from '@/payments/interfaces/payment.interface'
 import { PaymentsRepository } from '@/payments/repositories/payments.repository'
 
 interface IExecuteParams {
@@ -14,14 +13,15 @@ interface IExecuteParams {
   updatePaymentDto: UpdatePaymentDto
 }
 
-type IApplyValidationsParams = IExecuteParams
+type IApplyValidationsParams = Omit<IExecuteParams, 'updatePaymentDto'>
 
 @Injectable()
 export class UpdatePaymentUseCase {
   constructor(private readonly paymentsRepository: PaymentsRepository) {}
 
-  async applyValidations({ id, updatePaymentDto }: IApplyValidationsParams) {
-    const { birthdayDate } = updatePaymentDto
+  async applyValidations({ id }: IApplyValidationsParams): Promise<{
+    payment: IPayment
+  }> {
     const payment = await this.paymentsRepository.getPaymentById(id)
 
     if (!payment) {
@@ -43,27 +43,19 @@ export class UpdatePaymentUseCase {
       )
     }
 
-    const formatedBirthdayDate = ValidAndParseDate(birthdayDate)
-
-    if (!formatedBirthdayDate) {
-      throw new BadRequestException('Ops! Data de nascimento inválida.')
+    return {
+      payment,
     }
-
-    return { formatedBirthdayDate, payment }
   }
 
   async execute({ id, updatePaymentDto }: IExecuteParams): Promise<void> {
-    const { formatedBirthdayDate, payment } = await this.applyValidations({
+    const { payment } = await this.applyValidations({
       id,
-      updatePaymentDto,
     })
 
     await this.paymentsRepository.updatePayment({
       id,
-      updatePaymentDto: {
-        ...updatePaymentDto,
-        birthdayDate: formatedBirthdayDate,
-      },
+      updatePaymentDto,
       paymentBatchId: payment.paymentBatchId,
     })
   }

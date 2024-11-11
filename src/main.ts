@@ -9,11 +9,10 @@ async function enableDocumentation(app: INestApplication<any>) {
   const config = new DocumentBuilder()
     .setTitle('Pay-Tracker-API')
     .setDescription('API direcionada a upload e controle de pagamentos')
-    .addTag('Pay-Tracker-API')
     .build()
 
   const documentFactory = () => SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('api', app, documentFactory)
+  SwaggerModule.setup('doc', app, documentFactory)
 }
 
 async function bootstrap() {

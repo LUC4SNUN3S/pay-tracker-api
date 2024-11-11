@@ -2,8 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { extname } from 'path'
 
 import { DatabaseService } from '@/database/database.service'
-import { ProcessFileService } from '@/file-upload/services/process-file.service'
 import { IPayment } from '@/payments/interfaces/payment.interface'
+import { ProcessFileService } from '@/payments/services/process-file.service'
 
 export const BATCH_SIZE = 1000
 
@@ -16,7 +16,7 @@ interface ISaveToDatabaseParams {
 }
 
 @Injectable()
-export class FileUploadUseCase {
+export class UploadPaymentsUseCase {
   constructor(
     private readonly processFileService: ProcessFileService,
     private readonly databaseService: DatabaseService,

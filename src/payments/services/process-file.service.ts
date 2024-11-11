@@ -3,6 +3,7 @@ import { randomUUID } from 'crypto'
 import * as iconv from 'iconv-lite'
 import * as jschardet from 'jschardet'
 
+import { formatCpf } from '@/core/utils/format-cpf.util'
 import { ValidAndParseDate } from '@/core/utils/parse-data.util'
 import { IPayment } from '@/payments/interfaces/payment.interface'
 
@@ -74,10 +75,20 @@ export class ProcessFileService {
       birthdayDate: '00000000',
     }
 
-    if (field === 'birthdayDate') {
-      return value === formats[field] ? null : ValidAndParseDate(value)
+    const isEqual = value === formats[field]
+
+    if (isEqual) {
+      return null
     }
 
-    return value === formats[field] ? null : value
+    if (field === 'birthdayDate') {
+      value = ValidAndParseDate(value)
+    }
+
+    if (field === 'cpf') {
+      value = formatCpf(value)
+    }
+
+    return value
   }
 }

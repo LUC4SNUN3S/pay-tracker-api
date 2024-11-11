@@ -3,6 +3,7 @@ import { DeletePaymentUseCase } from '@/payments/use-cases/delete-payment.usecas
 import { ExportPaymentToCsvUseCase } from '@/payments/use-cases/export-payment-csv.usecase'
 import { GetPaymentPaginatedUseCase } from '@/payments/use-cases/get-payment-paginated.usecase'
 import { UpdatePaymentUseCase } from '@/payments/use-cases/update-payment.usecase'
+import { UploadPaymentsUseCase } from '@/payments/use-cases/upload-payments.usecase'
 
 export {
   ConfirmPaymentsUseCase,
@@ -10,4 +11,5 @@ export {
   GetPaymentPaginatedUseCase,
   UpdatePaymentUseCase,
   ExportPaymentToCsvUseCase,
+  UploadPaymentsUseCase,
 }
