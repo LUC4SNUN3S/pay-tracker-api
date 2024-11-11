@@ -1,6 +1,6 @@
 # Pay tracker API
 
-Este é um sistema robusto desenvolvido para otimizar o processo de recebimento de pagamentos. Ele permite o upload de arquivos contendo os dados de pagamento, visualização paginada, edição e exclusão de dados, além de fornecer uma funcionalidade de auditoria e exportação para CSV.
+Este é um sistema robusto desenvolvido para otimizar o processo de recebimento de pagamentos. Ele permite o upload de arquivos contendo os dados de pagamento, visualização paginada, edição e exclusão de dados, além de fornecer uma funcionalidade de exportação para CSV.
 
 ## Índice
 
